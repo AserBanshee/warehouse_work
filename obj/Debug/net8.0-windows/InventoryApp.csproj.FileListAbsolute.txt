@@ -1,0 +1,15 @@
+D:\InventoryApp\obj\Debug\net8.0-windows\InventoryApp.csproj.AssemblyReference.cache
+D:\InventoryApp\obj\Debug\net8.0-windows\Views\MainWindow.baml
+D:\InventoryApp\obj\Debug\net8.0-windows\Views\MovementDialog.baml
+D:\InventoryApp\obj\Debug\net8.0-windows\Views\ProductDialog.baml
+D:\InventoryApp\obj\Debug\net8.0-windows\App.baml
+D:\InventoryApp\obj\Debug\net8.0-windows\Views\MainWindow.g.cs
+D:\InventoryApp\obj\Debug\net8.0-windows\Views\MovementDialog.g.cs
+D:\InventoryApp\obj\Debug\net8.0-windows\Views\ProductDialog.g.cs
+D:\InventoryApp\obj\Debug\net8.0-windows\App.g.cs
+D:\InventoryApp\obj\Debug\net8.0-windows\InventoryApp_MarkupCompile.cache
+D:\InventoryApp\obj\Debug\net8.0-windows\InventoryApp.g.resources
+D:\InventoryApp\obj\Debug\net8.0-windows\InventoryApp.GeneratedMSBuildEditorConfig.editorconfig
+D:\InventoryApp\obj\Debug\net8.0-windows\InventoryApp.AssemblyInfoInputs.cache
+D:\InventoryApp\obj\Debug\net8.0-windows\InventoryApp.AssemblyInfo.cs
+D:\InventoryApp\obj\Debug\net8.0-windows\InventoryApp.csproj.CoreCompileInputs.cache
