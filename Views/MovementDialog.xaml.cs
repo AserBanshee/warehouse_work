@@ -18,9 +18,15 @@ namespace InventoryApp.Views
 
         private void SaveButton_Click(object sender, RoutedEventArgs e)
         {
-            if (!VM.IsValid)
+            if (VM.SelectedProduct == null)
             {
-                MessageBox.Show("Исправьте ошибки перед сохранением.", "Валидация",
+                MessageBox.Show("Выберите товар.", "Валидация",
+                                MessageBoxButton.OK, MessageBoxImage.Warning);
+                return;
+            }
+            if (VM.Quantity <= 0)
+            {
+                MessageBox.Show("Количество должно быть больше нуля.", "Валидация",
                                 MessageBoxButton.OK, MessageBoxImage.Warning);
                 return;
             }
@@ -31,18 +37,18 @@ namespace InventoryApp.Views
             DialogResult = false;
     }
 
-    // ─── ViewModel диалога движения ────────────────────────────────────
     public class MovementDialogViewModel : INotifyPropertyChanged, IDataErrorInfo
     {
         public List<Product>      Products      { get; }
         public List<MovementType> MovementTypes { get; } =
             new() { MovementType.In, MovementType.Out };
 
-        private int _productId;
-        public int ProductId
+        // ── SelectedProduct (объект, не Id) ─────────────────────────
+        private Product? _selectedProduct;
+        public Product? SelectedProduct
         {
-            get => _productId;
-            set { _productId = value; OnProp(nameof(ProductId)); }
+            get => _selectedProduct;
+            set { _selectedProduct = value; OnProp(nameof(SelectedProduct)); }
         }
 
         private MovementType _selectedType = MovementType.In;
@@ -52,7 +58,7 @@ namespace InventoryApp.Views
             set { _selectedType = value; OnProp(nameof(SelectedType)); }
         }
 
-        private int _quantity;
+        private int _quantity = 1;
         public int Quantity
         {
             get => _quantity;
@@ -68,29 +74,30 @@ namespace InventoryApp.Views
 
         public MovementDialogViewModel(List<Product> products, Product? preselected)
         {
-            Products = products;
-            if (preselected != null) ProductId = preselected.Id;
+            Products        = products;
+            _selectedProduct = preselected ?? (products.Count > 0 ? products[0] : null);
         }
 
-        // ── IDataErrorInfo ─────────────────────────────────────────────
+        // IDataErrorInfo
         public string this[string col] => col switch
         {
-            nameof(ProductId) => ProductId <= 0 ? "Выберите товар."                      : string.Empty,
-            nameof(Quantity)  => Quantity  <= 0 ? "Количество должно быть больше нуля."  : string.Empty,
-            _                 => string.Empty
+            nameof(SelectedProduct) => SelectedProduct == null ? "Выберите товар." : string.Empty,
+            nameof(Quantity)        => Quantity <= 0 ? "Должно быть > 0." : string.Empty,
+            _ => string.Empty
         };
-        public string Error   => this[nameof(ProductId)] + this[nameof(Quantity)];
+        public string Error   => this[nameof(SelectedProduct)] + this[nameof(Quantity)];
         public bool   IsValid => string.IsNullOrEmpty(Error);
 
         public StockMovement ToMovement() => new()
         {
-            ProductId = ProductId,
+            ProductId = SelectedProduct!.Id,
             Type      = SelectedType,
             Quantity  = Quantity,
             Comment   = Comment
         };
 
         public event PropertyChangedEventHandler? PropertyChanged;
-        private void OnProp(string n) => PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(n));
+        private void OnProp(string n) =>
+            PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(n));
     }
 }
